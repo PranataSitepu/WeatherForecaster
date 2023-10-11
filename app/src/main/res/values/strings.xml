@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">WeatherForecaster</string>
+    <string name="temperature_value">%.1f&#176;</string>
+    <string name="wind_value">%.1fkm/h</string>
+    <string name="humidity_value">%d%%</string>
+
+    <string name="favorite">Favorite</string>
+    <string name="add_favorite">Add Favorite</string>
+</resources>
