@@ -16,7 +16,6 @@ class GetFavoriteWeatherUseCase @Inject constructor(
         return weatherRepository.getWeatherData(
             lat = lat,
             long = long,
-            appId = "50e7842f7455c50e480f37195614149a",
             exclude = "minutely,hourly,daily"
         )
     }

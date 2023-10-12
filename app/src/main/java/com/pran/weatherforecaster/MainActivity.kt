@@ -3,61 +3,65 @@ package com.pran.weatherforecaster
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.activity.viewModels
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.pran.weatherforecaster.ui.HomeViewModel
 import com.pran.weatherforecaster.ui.theme.WeatherForecasterTheme
 import com.pran.weatherforecaster.ui.view.HomeScreen
-import dagger.android.AndroidInjector
-import dagger.android.DispatchingAndroidInjector
-import dagger.android.HasAndroidInjector
-import javax.inject.Inject
+import com.pran.weatherforecaster.ui.view.search.SearchLocationScreen
+import dagger.hilt.android.AndroidEntryPoint
 
-class MainActivity : ComponentActivity(), HasAndroidInjector {
+@AndroidEntryPoint
+class MainActivity : ComponentActivity() {
 
-    @Inject
-    lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Any>
-
-    @Inject
-    lateinit var viewModelFactory: ViewModelProvider.Factory
-
-    override fun androidInjector(): AndroidInjector<Any> = dispatchingAndroidInjector
+    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContent {
             WeatherForecasterTheme {
-                // A surface container using the 'background' color from the theme
+                val navController = rememberNavController()
+                val weatherState = viewModel.weatherState.collectAsState().value
+                val searchState = viewModel.searchState.collectAsState().value
+                val favoriteWeather = viewModel.favoriteWeathers.observeAsState().value
+
                 Surface(
-                    modifier = Modifier.fillMaxSize(),
+                    modifier = Modifier.fillMaxWidth(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    HomeScreen()
+                    NavHost(navController = navController, startDestination = "home") {
+                        composable("home") {
+                            HomeScreen(
+                                weatherState = weatherState,
+                                favoriteWeather = favoriteWeather,
+                                onNavigateToSearch = { navController.navigate("search") }
+                            )
+                        }
+                        composable("search") {
+                            SearchLocationScreen(
+                                searchState = searchState,
+                                onSearch = { viewModel.getCityList(it) },
+                                onSelected = {
+                                    viewModel.saveFavoriteCity(it)
+                                    viewModel.getWeatherData()
+                                    viewModel.loadFavoriteCity()
+                                    navController.popBackStack()
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
     }
 
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    WeatherForecasterTheme {
-        Greeting("Android")
-    }
 }

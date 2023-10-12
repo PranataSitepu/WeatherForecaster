@@ -2,6 +2,8 @@ package com.pran.weatherforecaster.domain.model
 
 data class Weather(
     val location: String,
+    val lat: Double,
+    val long: Double,
     val current: CurrentWeather,
     val dailies: List<DailyWeather>?
 ) {

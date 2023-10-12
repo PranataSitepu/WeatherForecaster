@@ -27,7 +27,11 @@ fun WeatherSection(data: Weather) {
         Column(modifier = Modifier.padding(vertical = 50.dp)) {
             CurrentWeatherSection(data = data.current, location = data.location)
             Spacer(modifier = Modifier.height(32.dp))
-            data.dailies?.let { PredictedWeatherSection(data = it) }
+            data.dailies?.let {
+                PredictedWeatherSection(
+                    data = it
+                )
+            }
         }
     }
 }
@@ -37,6 +41,8 @@ fun WeatherSection(data: Weather) {
 private fun WeatherSectionPreview() {
     val dummyData = Weather(
         location = "Jakarta",
+        lat = 0.0,
+        long = 0.0,
         current = Weather.CurrentWeather(
             date = "11 October 2023",
             temp = 28.41,

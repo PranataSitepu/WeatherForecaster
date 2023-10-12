@@ -4,6 +4,6 @@
     <string name="wind_value">%.1fkm/h</string>
     <string name="humidity_value">%d%%</string>
 
-    <string name="favorite">Favorite</string>
+    <string name="favorite">Favorites</string>
     <string name="add_favorite">Add Favorite</string>
 </resources>

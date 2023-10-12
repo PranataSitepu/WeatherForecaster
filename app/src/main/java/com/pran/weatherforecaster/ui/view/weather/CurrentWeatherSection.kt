@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -17,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pran.weatherforecaster.R
 import com.pran.weatherforecaster.domain.model.Weather
+import com.pran.weatherforecaster.ui.view.common.CustomText
 import com.pran.weatherforecaster.ui.view.common.IconWithText
 
 @Composable
@@ -25,7 +25,7 @@ fun CurrentWeatherSection(data: Weather.CurrentWeather, location: String) {
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = data.date, fontSize = 20.sp)
+        CustomText(text = data.date, fontSize = 20.sp)
         Spacer(modifier = Modifier.height(32.dp))
         Row(
             modifier = Modifier
@@ -34,16 +34,17 @@ fun CurrentWeatherSection(data: Weather.CurrentWeather, location: String) {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(
+            CustomText(
+                modifier = Modifier.weight(0.5f),
                 text = stringResource(id = R.string.temperature_value, data.temp),
-                fontSize = 72.sp
+                fontSize = 84.sp
             )
             Column(
                 modifier = Modifier
                     .weight(0.5f)
                     .padding(8.dp)
             ) {
-                Text(text = data.descriptions, fontSize = 20.sp)
+                CustomText(text = data.descriptions, fontSize = 20.sp)
                 Spacer(modifier = Modifier.height(2.dp))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -67,7 +68,7 @@ fun CurrentWeatherSection(data: Weather.CurrentWeather, location: String) {
                     )
                 }
                 Spacer(modifier = Modifier.height(2.dp))
-                Text(text = location, fontSize = 20.sp)
+                CustomText(text = location, fontSize = 20.sp)
             }
         }
     }

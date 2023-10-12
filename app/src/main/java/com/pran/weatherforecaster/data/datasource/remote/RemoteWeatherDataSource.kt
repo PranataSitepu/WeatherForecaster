@@ -1,6 +1,7 @@
-package com.pran.weatherforecaster.data.datasource
+package com.pran.weatherforecaster.data.datasource.remote
 
-import com.pran.weatherforecaster.data.model.WeatherDto
+import com.pran.weatherforecaster.data.datasource.WeatherDataSource
+import com.pran.weatherforecaster.data.model.remote.WeatherDto
 import com.pran.weatherforecaster.data.network.ApiInterface
 import com.pran.weatherforecaster.data.network.handleRequestOnFlow
 import javax.inject.Inject
@@ -13,10 +14,9 @@ class RemoteWeatherDataSource @Inject constructor(
     override suspend fun getWeatherData(
         lat: Double,
         long: Double,
-        appId: String,
         exclude: String
     ): Flow<WeatherDto> =
         handleRequestOnFlow {
-            apiInterface.getCurrentWeather(lat = lat, long = long, appId = appId, exclude = exclude)
+            apiInterface.getCurrentWeather(lat = lat, long = long, exclude = exclude)
         }
 }

@@ -1,6 +1,7 @@
 package com.pran.weatherforecaster.ui.view.favorites
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,9 +21,13 @@ import com.pran.weatherforecaster.R
 import com.pran.weatherforecaster.ui.view.common.IconWithText
 
 @Composable
-fun AddFavoriteItem() {
+fun AddFavoriteItem(
+    onNavigateToSearch: () -> Unit
+) {
     Surface(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onNavigateToSearch() },
         shape = RoundedCornerShape(corner = CornerSize(8.dp)),
         border = BorderStroke(width = 1.dp, color = Color.LightGray),
         color = Color.LightGray
@@ -45,5 +50,5 @@ fun AddFavoriteItem() {
 @Preview(showBackground = true, showSystemUi = false)
 @Composable
 private fun AddFavoriteItemPreview() {
-    AddFavoriteItem()
+    AddFavoriteItem {}
 }

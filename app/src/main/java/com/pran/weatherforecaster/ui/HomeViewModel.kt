@@ -1,62 +1,120 @@
 package com.pran.weatherforecaster.ui
 
+import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.pran.weatherforecaster.domain.model.City
+import com.pran.weatherforecaster.domain.model.Resource
 import com.pran.weatherforecaster.domain.model.Weather
+import com.pran.weatherforecaster.domain.usecase.GetCityListUseCase
 import com.pran.weatherforecaster.domain.usecase.GetFavoriteWeatherUseCase
 import com.pran.weatherforecaster.domain.usecase.GetWeatherUseCase
+import com.pran.weatherforecaster.domain.usecase.LoadFavoriteCityUseCase
+import com.pran.weatherforecaster.domain.usecase.SaveFavoriteCityUseCase
+import com.pran.weatherforecaster.ui.model.FavoriteWeatherSpec
+import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
+@HiltViewModel
 class HomeViewModel @Inject constructor(
     private val getWeatherUseCase: GetWeatherUseCase,
-    private val getFavoriteWeatherUseCase: GetFavoriteWeatherUseCase
+    private val getFavoriteWeatherUseCase: GetFavoriteWeatherUseCase,
+    private val getCityListUseCase: GetCityListUseCase,
+    private val saveFavoriteCityUseCase: SaveFavoriteCityUseCase,
+    private val loadFavoriteCityUseCase: LoadFavoriteCityUseCase
 ) : ViewModel() {
 
-    private val _weatherState: MutableStateFlow<State> = MutableStateFlow(State.Initial)
-    val weatherState: StateFlow<State>
+    private val _weatherState: MutableStateFlow<Resource<Weather>> =
+        MutableStateFlow(Resource.Initial())
+    val weatherState: StateFlow<Resource<Weather>>
         get() = _weatherState
+
+    private val _favoriteWeathers = MutableLiveData<List<FavoriteWeatherSpec>>()
+    val favoriteWeathers: LiveData<List<FavoriteWeatherSpec>> = _favoriteWeathers
+
+    private val _searchState: MutableStateFlow<Resource<List<City>>> =
+        MutableStateFlow(Resource.Initial())
+    val searchState: StateFlow<Resource<List<City>>>
+        get() = _searchState
 
     init {
         getWeatherData()
+        loadFavoriteCity()
     }
 
     fun getWeatherData() {
         viewModelScope.launch {
-            _weatherState.emit(State.Loading)
+            _weatherState.emit(Resource.Loading())
             getWeatherUseCase.execute(
                 lat = -6.288364622987753,
                 long = 106.92298059911394
             ).catch {
-                _weatherState.emit(State.Error(it.message))
+                _weatherState.emit(Resource.Error(it))
             }.collectLatest {
-                _weatherState.emit(State.Success(it))
+                _weatherState.emit(Resource.Success(it))
             }
         }
     }
 
-    fun getFavoriteWeatherData() {
+    fun getCityList(query: String) {
         viewModelScope.launch {
-            _weatherState.emit(State.Loading)
-            getFavoriteWeatherUseCase.execute(
-                lat = -6.288364622987753,
-                long = 106.92298059911394
-            ).catch {
-                _weatherState.emit(State.Error(it.message))
-            }.collectLatest {
-                _weatherState.emit(State.Success(it))
+            _searchState.emit(Resource.Loading())
+            getCityListUseCase.execute(query)
+                .catch {
+                    _searchState.emit(Resource.Error(it))
+                    Log.e("ERROR", it.message.orEmpty())
+                }
+                .collectLatest {
+                    _searchState.emit(Resource.Success(it))
+                    Log.e("CITY", it.joinToString { city -> city.name })
+                }
+        }
+    }
+
+    fun saveFavoriteCity(city: City) {
+        viewModelScope.launch(Dispatchers.IO) {
+            saveFavoriteCityUseCase.execute(city)
+        }
+    }
+
+    fun loadFavoriteCity() {
+        viewModelScope.launch(Dispatchers.IO) {
+            val result = loadFavoriteCityUseCase.execute()
+            _favoriteWeathers.postValue(result)
+            result.forEachIndexed { index, favoriteWeatherSpec ->
+                getFavoriteWeatherData(index, favoriteWeatherSpec)
             }
         }
     }
 
-    sealed class State {
-        object Initial : State()
-        object Loading : State()
-        class Success(val data: Weather) : State()
-        class Error(val message: String?) : State()
+    private fun getFavoriteWeatherData(idx: Int, item: FavoriteWeatherSpec) {
+        viewModelScope.launch {
+            if (item.lat != null && item.long != null) {
+                getFavoriteWeatherUseCase.execute(
+                    lat = item.lat,
+                    long = item.long
+                ).catch {
+                    it.printStackTrace()
+                }.collectLatest { weather ->
+                    _favoriteWeathers.value?.let {
+                        val temporary = it.toMutableList()
+                        temporary[idx] = temporary[idx].copy(
+                            temp = weather.current.temp,
+                            humidity = weather.current.humidity,
+                            windSpeed = weather.current.windSpeed
+                        )
+                        _favoriteWeathers.postValue(temporary)
+                    }
+                }
+            }
+        }
     }
 }

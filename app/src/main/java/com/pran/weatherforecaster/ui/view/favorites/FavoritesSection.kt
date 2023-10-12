@@ -4,32 +4,36 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.pran.weatherforecaster.domain.model.Weather
-import com.pran.weatherforecaster.ui.util.MAX_FAVORITE_CITY
+import com.pran.weatherforecaster.R
+import com.pran.weatherforecaster.ui.model.FavoriteWeatherSpec
+import com.pran.weatherforecaster.ui.view.common.CustomText
 
 @Composable
-fun FavoriteSection(data: List<Weather>) {
+fun FavoriteSection(
+    data: List<FavoriteWeatherSpec>?,
+    onNavigateToSearch: () -> Unit,
+) {
     Column(modifier = Modifier.padding(16.dp)) {
-        Text(text = "Favorites", fontSize = 16.sp)
+        CustomText(text = stringResource(id = R.string.favorite), fontSize = 16.sp)
         LazyColumn(
             modifier = Modifier.padding(vertical = 12.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            items(data.size) {
-                FavoriteItem(data = data[it].current, location = data[it].location)
-            }
-            if (data.size < MAX_FAVORITE_CITY) {
-                item {
-                    AddFavoriteItem()
+            data?.let { list ->
+                items(list.size) {
+                    FavoriteItem(data = list[it])
                 }
+            }
+            item {
+                AddFavoriteItem(onNavigateToSearch)
             }
         }
     }
@@ -39,39 +43,30 @@ fun FavoriteSection(data: List<Weather>) {
 @Composable
 private fun FavoriteSectionPreview() {
     val dummyData = listOf(
-        Weather(
-            location = "Jakarta",
-            current = Weather.CurrentWeather(
-                date = "11 October 2023",
-                temp = 28.41,
-                humidity = 70,
-                windSpeed = 1.23,
-                descriptions = "Sedikit Berawan"
-            ),
-            dailies = null
+        FavoriteWeatherSpec(
+            city = "Jakarta",
+            lat = 0.0,
+            long = 0.0,
+            temp = 28.41,
+            humidity = 70,
+            windSpeed = 1.23,
         ),
-        Weather(
-            location = "Bandung",
-            current = Weather.CurrentWeather(
-                date = "11 October 2023",
-                temp = 25.31,
-                humidity = 90,
-                windSpeed = 1.42,
-                descriptions = "Berawan"
-            ),
-            dailies = null
+        FavoriteWeatherSpec(
+            city = "Bandung",
+            lat = 0.0,
+            long = 0.0,
+            temp = 25.31,
+            humidity = 90,
+            windSpeed = 1.42,
         ),
-        Weather(
-            location = "Bali",
-            current = Weather.CurrentWeather(
-                date = "11 October 2023",
-                temp = 26.82,
-                humidity = 80,
-                windSpeed = 1.66,
-                descriptions = "Cerah"
-            ),
-            dailies = null
-        )
+        FavoriteWeatherSpec(
+            city = "Bali",
+            lat = 0.0,
+            long = 0.0,
+            temp = 26.82,
+            humidity = 80,
+            windSpeed = 1.66,
+        ),
     )
-    FavoriteSection(dummyData)
+    FavoriteSection(dummyData) {}
 }

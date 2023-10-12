@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +17,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.pran.weatherforecaster.R
 import com.pran.weatherforecaster.domain.model.Weather
+import com.pran.weatherforecaster.ui.view.common.CustomText
 import com.pran.weatherforecaster.ui.view.common.IconWithText
 
 @Composable
@@ -40,8 +40,8 @@ private fun DailyWeatherItem(data: Weather.DailyWeather) {
             .padding(8.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = data.day, fontSize = 14.sp)
-        Text(text = data.date, fontSize = 7.sp)
+        CustomText(text = data.day.uppercase(), fontSize = 14.sp)
+        CustomText(text = data.date, fontSize = 7.sp)
         Spacer(modifier = Modifier.height(8.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,

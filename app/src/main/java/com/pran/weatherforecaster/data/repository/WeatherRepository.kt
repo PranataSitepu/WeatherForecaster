@@ -8,7 +8,6 @@ interface WeatherRepository {
     suspend fun getWeatherData(
         lat: Double,
         long: Double,
-        appId: String,
-        exclude:String
+        exclude: String
     ): Flow<Weather>
 }

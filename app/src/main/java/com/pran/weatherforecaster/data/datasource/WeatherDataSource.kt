@@ -1,6 +1,6 @@
 package com.pran.weatherforecaster.data.datasource
 
-import com.pran.weatherforecaster.data.model.WeatherDto
+import com.pran.weatherforecaster.data.model.remote.WeatherDto
 import kotlinx.coroutines.flow.Flow
 
 interface WeatherDataSource {
@@ -9,12 +9,8 @@ interface WeatherDataSource {
         suspend fun getWeatherData(
             lat: Double,
             long: Double,
-            appId: String,
             exclude: String
         ): Flow<WeatherDto>
     }
 
-
-    interface Local {
-    }
 }

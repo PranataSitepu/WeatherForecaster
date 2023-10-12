@@ -1,4 +1,4 @@
-package com.pran.weatherforecaster.data.model
+package com.pran.weatherforecaster.data.model.remote
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
