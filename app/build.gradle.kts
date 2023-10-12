@@ -11,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.pran.weatherforecaster"
-        minSdk = 24
+        minSdk = 21
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
@@ -30,7 +30,7 @@ android {
     buildTypes {
         release {
             isMinifyEnabled = false
-            isDebuggable = true
+            isDebuggable = false
 
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -104,7 +104,8 @@ dependencies {
     kapt("com.google.dagger:hilt-android-compiler:2.44")
 
     //chucker
-    implementation("com.github.chuckerteam.chucker:library:3.5.2")
+    debugImplementation("com.github.chuckerteam.chucker:library:3.5.2")
+    releaseImplementation("com.github.chuckerteam.chucker:library-no-op:3.5.2")
 
     //room
     implementation("androidx.room:room-runtime:2.5.2")
