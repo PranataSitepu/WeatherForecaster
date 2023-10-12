@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -8,6 +10,9 @@ plugins {
 android {
     namespace = "com.pran.weatherforecaster"
     compileSdk = 34
+
+    val properties = Properties()
+    properties.load(project.rootProject.file("local.properties").inputStream())
 
     defaultConfig {
         applicationId = "com.pran.weatherforecaster"
@@ -22,9 +27,9 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org\"")
-        buildConfigField("String", "OPEN_WEATHER_ID", "\"51c31a13feaea8bc8904f27e6d580b3a\"")
-        buildConfigField("String", "BACK4APP_ID", "\"8eXhyoIYXXvEnuluozhCkIbbJ6EWJVNUZc4U2yC6\"")
-        buildConfigField("String", "BACK4APP_KEY", "\"jzbd6Kt40UCV0NTNB5rIv8U6q9OrJAYyKqczrTHY\"")
+        buildConfigField("String", "OPEN_WEATHER_ID", "\"${properties.getProperty("openweatherAppId", "")}\"")
+        buildConfigField("String", "BACK4APP_ID", "\"${properties.getProperty("back4appId", "")}\"")
+        buildConfigField("String", "BACK4APP_KEY", "\"${properties.getProperty("back4appKey", "")}\"")
     }
 
     buildTypes {
