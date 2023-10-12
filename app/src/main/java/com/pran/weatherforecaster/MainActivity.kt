@@ -2,6 +2,7 @@ package com.pran.weatherforecaster
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -15,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.findNavController
 import com.pran.weatherforecaster.ui.HomeViewModel
 import com.pran.weatherforecaster.ui.theme.WeatherForecasterTheme
 import com.pran.weatherforecaster.ui.view.HomeScreen
@@ -72,6 +74,9 @@ class MainActivity : ComponentActivity() {
                                         navController.popBackStack()
                                     }
                                 )
+                                BackHandler {
+                                    navController.popBackStack()
+                                }
                             }
                         }
                     }
