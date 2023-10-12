@@ -19,6 +19,8 @@ import com.pran.weatherforecaster.ui.view.common.CustomText
 fun FavoriteSection(
     data: List<FavoriteWeatherSpec>?,
     onNavigateToSearch: () -> Unit,
+    onSelect: (FavoriteWeatherSpec) -> Unit,
+    onDelete: (FavoriteWeatherSpec) -> Unit,
 ) {
     Column(modifier = Modifier.padding(16.dp)) {
         CustomText(text = stringResource(id = R.string.favorite), fontSize = 16.sp)
@@ -29,7 +31,11 @@ fun FavoriteSection(
         ) {
             data?.let { list ->
                 items(list.size) {
-                    FavoriteItem(data = list[it])
+                    FavoriteItem(
+                        data = list[it],
+                        onSelect = onSelect,
+                        onDelete = onDelete
+                    )
                 }
             }
             item {
@@ -68,5 +74,5 @@ private fun FavoriteSectionPreview() {
             windSpeed = 1.66,
         ),
     )
-    FavoriteSection(dummyData) {}
+    FavoriteSection(dummyData, {}, {}, {})
 }

@@ -49,6 +49,14 @@ class MainActivity : ComponentActivity() {
                                     weatherState = weatherState,
                                     favoriteWeather = favoriteWeather,
                                     onNavigateToSearch = { navController.navigate("search") },
+                                    onSelect = {
+                                        viewModel.latitude = it.lat ?: 0.0
+                                        viewModel.longitude = it.long ?: 0.0
+                                        viewModel.getWeatherData()
+                                    },
+                                    onDelete = {
+                                        viewModel.deleteFavoriteCity(it)
+                                    },
                                     onRetry = {
                                         viewModel.getWeatherData()
                                         viewModel.loadFavoriteCity()
@@ -61,8 +69,6 @@ class MainActivity : ComponentActivity() {
                                     onSearch = { viewModel.getCityList(it) },
                                     onSelected = {
                                         viewModel.saveFavoriteCity(it)
-                                        viewModel.getWeatherData()
-                                        viewModel.loadFavoriteCity()
                                         navController.popBackStack()
                                     }
                                 )

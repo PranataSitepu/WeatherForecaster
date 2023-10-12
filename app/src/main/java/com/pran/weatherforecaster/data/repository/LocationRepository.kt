@@ -19,4 +19,6 @@ interface LocationRepository {
     )
 
     suspend fun loadFavoriteCity(): List<City>
+
+    suspend fun deleteFavoriteCity(name: String)
 }

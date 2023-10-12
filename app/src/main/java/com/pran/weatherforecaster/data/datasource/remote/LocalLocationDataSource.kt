@@ -16,8 +16,8 @@ class LocalLocationDataSource @Inject constructor(
         locationDao.insert(city)
     }
 
-    override fun deleteFavoriteCity(city: FavoriteCityEntity) {
-        locationDao.delete(city)
+    override fun deleteFavoriteCity(name: String) {
+        locationDao.deleteByName(name)
     }
 
 }

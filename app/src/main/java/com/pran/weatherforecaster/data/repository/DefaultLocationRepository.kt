@@ -34,4 +34,8 @@ class DefaultLocationRepository @Inject constructor(
         }
     }
 
+    override suspend fun deleteFavoriteCity(name: String) {
+        return localLocationDataSource.deleteFavoriteCity(name)
+    }
+
 }

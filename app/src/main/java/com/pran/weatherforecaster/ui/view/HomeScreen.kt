@@ -29,6 +29,8 @@ fun HomeScreen(
     weatherState: Resource<Weather>,
     favoriteWeather: List<FavoriteWeatherSpec>?,
     onNavigateToSearch: () -> Unit,
+    onSelect: (FavoriteWeatherSpec) -> Unit,
+    onDelete: (FavoriteWeatherSpec) -> Unit,
     onRetry: () -> Unit,
 ) {
     var showSnackbar by remember { mutableStateOf(false) }
@@ -56,7 +58,12 @@ fun HomeScreen(
 
                 else -> NoOpUpdate
             }
-            FavoriteSection(data = favoriteWeather, onNavigateToSearch = onNavigateToSearch)
+            FavoriteSection(
+                data = favoriteWeather,
+                onNavigateToSearch = onNavigateToSearch,
+                onSelect = onSelect,
+                onDelete = onDelete
+            )
         }
         if (showSnackbar) {
             Snackbar(
@@ -151,9 +158,11 @@ private fun HomeScreenPreview() {
         ),
     )
     HomeScreen(
-        weatherState = Resource.Error(Exception()),
+        weatherState = Resource.Success(dummyData),
         favoriteWeather = dummyFavoriteData,
         onNavigateToSearch = {},
+        onSelect = {},
+        onDelete = {},
         onRetry = {}
     )
 }

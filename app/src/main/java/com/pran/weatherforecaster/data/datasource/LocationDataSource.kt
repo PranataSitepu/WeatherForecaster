@@ -14,7 +14,7 @@ interface LocationDataSource {
         ): Flow<List<CityNameDto>>
 
         suspend fun getCityList(
-            query:String
+            query: String
         ): Flow<CityListDto>
     }
 
@@ -22,6 +22,6 @@ interface LocationDataSource {
     interface Local {
         fun getFavoriteCities(): List<FavoriteCityEntity>
         fun insertFavoriteCity(city: FavoriteCityEntity)
-        fun deleteFavoriteCity(city: FavoriteCityEntity)
+        fun deleteFavoriteCity(name: String)
     }
 }

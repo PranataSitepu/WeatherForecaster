@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.pran.weatherforecaster.domain.model.City
 import com.pran.weatherforecaster.domain.model.Resource
 import com.pran.weatherforecaster.domain.model.Weather
+import com.pran.weatherforecaster.domain.usecase.DeleteFavoriteCityUseCase
 import com.pran.weatherforecaster.domain.usecase.GetCityListUseCase
 import com.pran.weatherforecaster.domain.usecase.GetFavoriteWeatherUseCase
 import com.pran.weatherforecaster.domain.usecase.GetWeatherUseCase
@@ -29,7 +30,8 @@ class HomeViewModel @Inject constructor(
     private val getFavoriteWeatherUseCase: GetFavoriteWeatherUseCase,
     private val getCityListUseCase: GetCityListUseCase,
     private val saveFavoriteCityUseCase: SaveFavoriteCityUseCase,
-    private val loadFavoriteCityUseCase: LoadFavoriteCityUseCase
+    private val loadFavoriteCityUseCase: LoadFavoriteCityUseCase,
+    private val deleteFavoriteCityUseCase: DeleteFavoriteCityUseCase
 ) : ViewModel() {
 
     private val _weatherState: MutableStateFlow<Resource<Weather>> =
@@ -45,6 +47,9 @@ class HomeViewModel @Inject constructor(
     val searchState: StateFlow<Resource<List<City>>>
         get() = _searchState
 
+    var latitude = -6.288364622987753
+    var longitude = 106.92298059911394
+
     init {
         getWeatherData()
         loadFavoriteCity()
@@ -54,8 +59,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             _weatherState.emit(Resource.Loading())
             getWeatherUseCase.execute(
-                lat = -6.288364622987753,
-                long = 106.92298059911394
+                lat = latitude,
+                long = longitude
             ).catch {
                 _weatherState.emit(Resource.Error(it))
             }.collectLatest {
@@ -82,6 +87,7 @@ class HomeViewModel @Inject constructor(
     fun saveFavoriteCity(city: City) {
         viewModelScope.launch(Dispatchers.IO) {
             saveFavoriteCityUseCase.execute(city)
+            loadFavoriteCity()
         }
     }
 
@@ -92,6 +98,13 @@ class HomeViewModel @Inject constructor(
             result.forEachIndexed { index, favoriteWeatherSpec ->
                 getFavoriteWeatherData(index, favoriteWeatherSpec)
             }
+        }
+    }
+
+    fun deleteFavoriteCity(spec: FavoriteWeatherSpec) {
+        viewModelScope.launch(Dispatchers.IO) {
+            deleteFavoriteCityUseCase.execute(spec)
+            loadFavoriteCity()
         }
     }
 

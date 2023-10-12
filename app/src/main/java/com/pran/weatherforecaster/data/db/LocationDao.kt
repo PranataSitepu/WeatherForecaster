@@ -21,4 +21,7 @@ interface LocationDao {
 
     @Delete
     fun delete(city: FavoriteCityEntity)
+
+    @Query("DELETE from favorite_city WHERE city_name = :name")
+    fun deleteByName(name:String)
 }
