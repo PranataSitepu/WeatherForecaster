@@ -47,8 +47,8 @@ class HomeViewModel @Inject constructor(
     val searchState: StateFlow<Resource<List<City>>>
         get() = _searchState
 
-    var latitude = -6.288364622987753
-    var longitude = 106.92298059911394
+    var latitude = -6.21462
+    var longitude = 106.84513
 
     init {
         getWeatherData()

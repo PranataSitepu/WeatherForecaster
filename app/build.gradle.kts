@@ -22,7 +22,7 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org\"")
-        buildConfigField("String", "OPEN_WEATHER_ID", "\"50e7842f7455c50e480f37195614149a\"")
+        buildConfigField("String", "OPEN_WEATHER_ID", "\"51c31a13feaea8bc8904f27e6d580b3a\"")
         buildConfigField("String", "BACK4APP_ID", "\"8eXhyoIYXXvEnuluozhCkIbbJ6EWJVNUZc4U2yC6\"")
         buildConfigField("String", "BACK4APP_KEY", "\"jzbd6Kt40UCV0NTNB5rIv8U6q9OrJAYyKqczrTHY\"")
     }
