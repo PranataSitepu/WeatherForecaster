@@ -71,7 +71,8 @@ Get Indonesia City Name by Query
 
     
 #### Screen Shots
+Video Link : https://drive.google.com/file/d/1lrR7Q7u1hrS8A7VPXfjsh1DIhRosslx0/view?usp=sharing
 
 <img title="Homepage" alt="Homepage" src="/app/image/homepage.png" height="500">  <img title="Error View" alt="Homepage Error View" src="/app/image/error page.png" height="500"> <img title="Search View" alt="Search View" src="/app/image/search page.png" height="500">
-<img title="Apk Size Release" alt="Apk Size" src="/app/image/apk size release.png" height="500">  <img title="Coverage" alt="Coverage" src="/app/image/coverage.png" height="500">
+<img title="Apk Size Release" alt="Apk Size" src="/app/image/apk size release.png" width="400">  <img title="Coverage" alt="Coverage" src="/app/image/coverage.png" width="400">
     
