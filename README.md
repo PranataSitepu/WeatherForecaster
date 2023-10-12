@@ -73,5 +73,5 @@ Get Indonesia City Name by Query
 #### Screen Shots
 
 <img title="Homepage" alt="Homepage" src="/app/image/homepage.png" height="500">  <img title="Error View" alt="Homepage Error View" src="/app/image/error page.png" height="500"> <img title="Search View" alt="Search View" src="/app/image/search page.png" height="500">
-<img title="Apk Size Release" alt="Apk Size" src="/app/image/apk size release.png" height="500">
+<img title="Apk Size Release" alt="Apk Size" src="/app/image/apk size release.png" height="500">  <img title="Coverage" alt="Coverage" src="/app/image/coverage.png" height="500">
     

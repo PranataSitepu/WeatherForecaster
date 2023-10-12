@@ -27,9 +27,17 @@ android {
         }
 
         buildConfigField("String", "BASE_URL", "\"https://api.openweathermap.org\"")
-        buildConfigField("String", "OPEN_WEATHER_ID", "\"${properties.getProperty("openweatherAppId", "")}\"")
+        buildConfigField(
+            "String",
+            "OPEN_WEATHER_ID",
+            "\"${properties.getProperty("openweatherAppId", "")}\""
+        )
         buildConfigField("String", "BACK4APP_ID", "\"${properties.getProperty("back4appId", "")}\"")
-        buildConfigField("String", "BACK4APP_KEY", "\"${properties.getProperty("back4appKey", "")}\"")
+        buildConfigField(
+            "String",
+            "BACK4APP_KEY",
+            "\"${properties.getProperty("back4appKey", "")}\""
+        )
     }
 
     buildTypes {
@@ -125,4 +133,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.4")
+    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("io.mockk:mockk-android:1.13.2")
+    testImplementation("io.mockk:mockk-agent:1.13.2")
+    testImplementation("com.google.truth:truth:0.42")
 }
