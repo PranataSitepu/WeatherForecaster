@@ -8,7 +8,7 @@ Simple App to show current weather and daily forecast for 3-days after.
 - Search favorite city (limited to Indonesia's city only)
 
 #### High Level Diagram
-
+<img title="HLD" alt="Weather App HLD" src="/app/image/Weather App-HLD.drawio.png">
 
 - User will be shown the UI using Jetpack Compose. 
 - When user interact it will trigger the viewmodel to fetch data from usecase. 
@@ -71,4 +71,6 @@ Get Indonesia City Name by Query
 
     
 #### Screen Shots
+
+<img title="Error View" alt="Homepage Error View" src="/app/image/error page.png" height="500"> <img title="Search View" alt="Search View" src="/app/image/search page.png" height="500">
     
