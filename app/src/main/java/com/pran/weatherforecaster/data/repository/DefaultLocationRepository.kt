@@ -3,6 +3,7 @@ package com.pran.weatherforecaster.data.repository
 import com.pran.weatherforecaster.data.datasource.LocationDataSource
 import com.pran.weatherforecaster.data.model.remote.toDataModel
 import com.pran.weatherforecaster.data.model.remote.toDomainModel
+import com.pran.weatherforecaster.domain.repository.LocationRepository
 import com.pran.weatherforecaster.domain.model.City
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

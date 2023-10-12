@@ -93,7 +93,13 @@ class HomeViewModel @Inject constructor(
 
     fun loadFavoriteCity() {
         viewModelScope.launch(Dispatchers.IO) {
-            val result = loadFavoriteCityUseCase.execute()
+            val result = loadFavoriteCityUseCase.execute().map {
+                FavoriteWeatherSpec(
+                    city = it.name,
+                    lat = it.latitude,
+                    long = it.longitude
+                )
+            }
             _favoriteWeathers.postValue(result)
             result.forEachIndexed { index, favoriteWeatherSpec ->
                 getFavoriteWeatherData(index, favoriteWeatherSpec)

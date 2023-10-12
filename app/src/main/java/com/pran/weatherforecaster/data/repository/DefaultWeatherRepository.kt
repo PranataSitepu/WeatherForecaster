@@ -2,6 +2,7 @@ package com.pran.weatherforecaster.data.repository
 
 import com.pran.weatherforecaster.data.datasource.WeatherDataSource
 import com.pran.weatherforecaster.data.model.remote.toDomainModel
+import com.pran.weatherforecaster.domain.repository.WeatherRepository
 import com.pran.weatherforecaster.domain.model.Weather
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

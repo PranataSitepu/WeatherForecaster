@@ -10,7 +10,7 @@ import retrofit2.http.Query
 
 interface ApiInterface {
 
-    @GET("/data/3.0/onecallz")
+    @GET("/data/3.0/onecall")
     suspend fun getCurrentWeather(
         @Query("lat") lat: Double,
         @Query("lon") long: Double,

@@ -1,7 +1,7 @@
 package com.pran.weatherforecaster.domain.usecase
 
-import com.pran.weatherforecaster.data.repository.LocationRepository
-import com.pran.weatherforecaster.data.repository.WeatherRepository
+import com.pran.weatherforecaster.domain.repository.LocationRepository
+import com.pran.weatherforecaster.domain.repository.WeatherRepository
 import com.pran.weatherforecaster.domain.model.Weather
 import javax.inject.Inject
 import kotlinx.coroutines.flow.Flow

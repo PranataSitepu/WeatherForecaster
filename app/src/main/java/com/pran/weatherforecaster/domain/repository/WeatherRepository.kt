@@ -1,4 +1,4 @@
-package com.pran.weatherforecaster.data.repository
+package com.pran.weatherforecaster.domain.repository
 
 import com.pran.weatherforecaster.domain.model.Weather
 import kotlinx.coroutines.flow.Flow

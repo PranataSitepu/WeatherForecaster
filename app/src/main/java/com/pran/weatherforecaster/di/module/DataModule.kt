@@ -9,8 +9,8 @@ import com.pran.weatherforecaster.data.db.LocationDao
 import com.pran.weatherforecaster.data.network.ApiInterface
 import com.pran.weatherforecaster.data.repository.DefaultLocationRepository
 import com.pran.weatherforecaster.data.repository.DefaultWeatherRepository
-import com.pran.weatherforecaster.data.repository.LocationRepository
-import com.pran.weatherforecaster.data.repository.WeatherRepository
+import com.pran.weatherforecaster.domain.repository.LocationRepository
+import com.pran.weatherforecaster.domain.repository.WeatherRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
