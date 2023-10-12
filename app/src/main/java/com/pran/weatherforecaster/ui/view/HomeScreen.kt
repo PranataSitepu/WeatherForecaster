@@ -1,10 +1,18 @@
 package com.pran.weatherforecaster.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Snackbar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -12,6 +20,7 @@ import androidx.compose.ui.viewinterop.NoOpUpdate
 import com.pran.weatherforecaster.domain.model.Resource
 import com.pran.weatherforecaster.domain.model.Weather
 import com.pran.weatherforecaster.ui.model.FavoriteWeatherSpec
+import com.pran.weatherforecaster.ui.view.common.CustomText
 import com.pran.weatherforecaster.ui.view.favorites.FavoriteSection
 import com.pran.weatherforecaster.ui.view.weather.WeatherSection
 
@@ -20,26 +29,57 @@ fun HomeScreen(
     weatherState: Resource<Weather>,
     favoriteWeather: List<FavoriteWeatherSpec>?,
     onNavigateToSearch: () -> Unit,
+    onRetry: () -> Unit,
 ) {
-    Column(modifier = Modifier.fillMaxSize()) {
-        when (weatherState) {
-            is Resource.Loading -> {
-                Column(
-                    modifier = Modifier.fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
+    var showSnackbar by remember { mutableStateOf(false) }
+
+    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+        Column(modifier = Modifier.fillMaxSize()) {
+            when (weatherState) {
+                is Resource.Loading -> {
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+                        CircularProgressIndicator()
+                    }
                 }
-            }
 
-            is Resource.Success -> {
-                WeatherSection(data = weatherState.data)
-            }
+                is Resource.Success -> {
+                    WeatherSection(data = weatherState.data)
+                }
 
-            else -> NoOpUpdate
+                is Resource.Error -> {
+                    showSnackbar = true
+                }
+
+                else -> NoOpUpdate
+            }
+            FavoriteSection(data = favoriteWeather, onNavigateToSearch = onNavigateToSearch)
         }
-        FavoriteSection(data = favoriteWeather, onNavigateToSearch = onNavigateToSearch)
+        if (showSnackbar) {
+            Snackbar(
+                modifier = Modifier.fillMaxWidth(),
+                action = {
+                    Column(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        Button(
+                            onClick = {
+                                onRetry()
+                                showSnackbar = false
+                            }
+                        ) {
+                            CustomText(text = "Retry")
+                        }
+                    }
+                }
+            ) {
+                CustomText(text = "Fail to fetch data. Please retry")
+            }
+        }
     }
 }
 
@@ -111,8 +151,9 @@ private fun HomeScreenPreview() {
         ),
     )
     HomeScreen(
-        weatherState = Resource.Success(dummyData),
+        weatherState = Resource.Error(Exception()),
         favoriteWeather = dummyFavoriteData,
-        onNavigateToSearch = {}
+        onNavigateToSearch = {},
+        onRetry = {}
     )
 }
